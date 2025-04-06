@@ -1,25 +1,23 @@
 from crewai import Agent, Task, Crew
-from langchain.tools import DuckDuckGoSearchRun
 from dotenv import load_dotenv
+import os
 
 # Charger les variables d'environnement
 load_dotenv()
 
-# Créer un outil de recherche
-search_tool = DuckDuckGoSearchRun()
-
 # Créer un agent
 researcher = Agent(
     role='Chercheur',
-    goal='Rechercher des informations pertinentes sur un sujet donné',
-    backstory='Expert en recherche et analyse d\'informations',
-    tools=[search_tool],
-    verbose=True
+    goal='Rechercher des informations pertinentes sur l\'intelligence artificielle',
+    backstory='Expert en recherche et analyse d\'informations sur l\'IA',
+    verbose=True,
+    allow_delegation=False
 )
 
 # Créer une tâche
 research_task = Task(
-    description='Rechercher des informations sur l\'intelligence artificielle en 2024',
+    description='Analyser les dernières avancées en intelligence artificielle et fournir un résumé des développements les plus significatifs.',
+    expected_output='Un rapport détaillé sur les dernières avancées en IA avec une chronologie des faits majeurs depuis 2018, incluant les développements majeurs et leur impact potentiel.',
     agent=researcher
 )
 
@@ -27,7 +25,7 @@ research_task = Task(
 crew = Crew(
     agents=[researcher],
     tasks=[research_task],
-    verbose=2
+    verbose=True
 )
 
 # Exécuter le crew
