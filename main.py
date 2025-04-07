@@ -1,34 +1,31 @@
-from crewai import Agent, Task, Crew
 from dotenv import load_dotenv
 import os
+from teams.travel_team.main import run_travel_team
+from teams.cabinet_operateur_etat.main import run_cabinet_team
+# Nous importerons d'autres équipes ici au fur et à mesure
 
-# Charger les variables d'environnement
-load_dotenv()
+def main():
+    # Charger les variables d'environnement
+    load_dotenv()
+    
+    # Menu simple pour choisir quelle équipe exécuter
+    print("\n=== CrewAI Enterprise ===")
+    print("1. Équipe Voyage (Essaouira)")
+    print("2. Équipe Cabinet Opérateur d'État")
+    print("3. Quitter")
+    
+    choice = input("\nChoisissez une équipe à exécuter (1-3): ")
+    
+    if choice == "1":
+        print("\nLancement de l'équipe Voyage...")
+        run_travel_team()
+    elif choice == "2":
+        print("\nLancement de l'équipe Cabinet Opérateur d'État...")
+        run_cabinet_team()
+    elif choice == "3":
+        print("\nAu revoir!")
+    else:
+        print("\nChoix invalide!")
 
-# Créer un agent
-researcher = Agent(
-    role='Chercheur',
-    goal='Rechercher des informations pertinentes sur l\'intelligence artificielle',
-    backstory='Expert en recherche et analyse d\'informations sur l\'IA',
-    verbose=True,
-    allow_delegation=False
-)
-
-# Créer une tâche
-research_task = Task(
-    description='Analyser les dernières avancées en intelligence artificielle et fournir un résumé des développements les plus significatifs.',
-    expected_output='Un rapport détaillé sur les dernières avancées en IA avec une chronologie des faits majeurs depuis 2018, incluant les développements majeurs et leur impact potentiel.',
-    agent=researcher
-)
-
-# Créer un crew
-crew = Crew(
-    agents=[researcher],
-    tasks=[research_task],
-    verbose=True
-)
-
-# Exécuter le crew
-result = crew.kickoff()
-print("\nRésultat de la recherche :")
-print(result) 
+if __name__ == "__main__":
+    main() 
